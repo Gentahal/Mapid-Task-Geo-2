@@ -1,22 +1,22 @@
 <?php
 
-// Tampilkan semua error agar muncul di layar
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require __DIR__.'/../vendor/autoload.php';
+
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// Path penyimpanan wajib di /tmp untuk Vercel
+// Paksa setup path
 $app->useStoragePath('/tmp');
+$app->useBootstrapPath('/tmp');
 
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
-
-$response->send();
-
-$kernel->terminate($request, $response);
+try {
+    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+    $response = $kernel->handle($request = Illuminate\Http\Request::capture());
+    $response->send();
+    $kernel->terminate($request, $response);
+} catch (Exception $e) {
+    // Tampilkan error jika inisialisasi kernel gagal
+    echo "<h1>Kernel Error</h1><pre>";
+    echo $e->getMessage();
+    echo "</pre>";
+    exit(1);
+}
