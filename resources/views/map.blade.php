@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rute ke TULT | GeoPort</title>
+    <title>Rute ke TULT | Mapid Task</title>
     <meta name="description" content="Visualisasi peta interaktif dengan MapLibre GL JS, rute Grand Saskara ke TULT.">
     <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body, html {
@@ -28,11 +28,14 @@
             left: 0;
         }
         .linear-panel {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        .brand-font {
+            font-family: 'Outfit', sans-serif;
         }
     </style>
 </head>
@@ -41,29 +44,34 @@
     <div id="map"></div>
 
     <div class="absolute top-6 left-6 z-10 flex flex-col gap-4">
-        <a href="{{ route('home') }}" class="inline-flex items-center w-max px-4 py-2 text-xs font-medium text-white bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all duration-200">
-            <svg class="w-3.5 h-3.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Kembali ke Home
+        <a href="{{ route('home') }}" class="inline-flex items-center w-max px-5 py-2.5 text-sm font-medium text-black bg-white rounded-full hover:bg-zinc-200 transition-colors shadow-lg">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Kembali ke Beranda
         </a>
 
-        <div class="linear-panel rounded-xl p-5 max-w-xs md:max-w-sm">
-            <div class="flex items-center mb-4">
-                <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center mr-3 border border-white/10">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="linear-panel rounded-2xl p-6 max-w-xs md:max-w-sm">
+            <div class="flex items-center mb-5">
+                <div class="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center mr-4 border border-zinc-700">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                 </div>
-                <h2 class="text-white font-medium text-sm tracking-tight">Informasi Rute Peta</h2>
+                <div>
+                    <h2 class="text-white font-semibold text-base tracking-tight brand-font">Mapid Task.</h2>
+                    <p class="text-xs text-zinc-400">Informasi Rute Peta</p>
+                </div>
             </div>
-            <p class="text-gray-400 text-xs leading-relaxed mb-5">
+            <p class="text-zinc-400 text-xs leading-relaxed mb-5">
                 Peta ini memvisualisasikan jalur dan jarak dari Kosku <strong>Grand Saskara</strong> menuju ke area gedung perkuliahan di <strong>TULT Telkom University</strong>.
             </p>
             <div class="flex flex-col gap-3 text-xs">
-                <div class="flex items-center text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#10b981] mr-3 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span> Titik Lokasi
+                <div class="flex items-center text-zinc-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#10b981] mr-3"></span> Titik Lokasi
                 </div>
-                <div class="flex items-center text-gray-400">
-                    <span class="w-2.5 h-0.5 bg-[#3b82f6] mr-3 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span> Jalur Tempuh
+                <div class="flex items-center text-zinc-300">
+                    <span class="w-2.5 h-0.5 bg-[#3b82f6] mr-3"></span> Jalur Tempuh
                 </div>
-                <div class="flex items-center text-gray-400">
+                <div class="flex items-center text-zinc-300">
                     <span class="w-2.5 h-2.5 border border-[#ef4444] bg-[#b91c1c]/30 mr-3 rounded-sm"></span> Kawasan Kampus
                 </div>
             </div>

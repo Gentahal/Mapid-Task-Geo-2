@@ -1,6 +1,13 @@
-# 🌍 GeoPort - Web GIS Portfolio
+# 🌍 Task Test Case
 
-GeoPort adalah sebuah aplikasi web sederhana berbasis **Laravel** dan **Tailwind CSS** yang dirancang sebagai portofolio profesional dan demonstrasi Sistem Informasi Geografis (Web GIS). Aplikasi ini menampilkan antarmuka yang sangat responsif, optimal untuk SEO, dan terintegrasi dengan peta interaktif modern.
+Mapid Task adalah sebuah aplikasi web sederhana berbasis **Laravel** dan **Tailwind CSS** yang dirancang sebagai portofolio profesional dan demonstrasi Sistem Informasi Geografis (Web GIS). Aplikasi ini menampilkan antarmuka yang sangat responsif, optimal untuk SEO, dan terintegrasi dengan peta interaktif modern untuk kebutuhan Task Test Case saya Intern di Mapid.
+
+## 🌐 Live Deployment (Submission)
+
+Aplikasi ini telah di-deploy dan dapat diakses secara publik oleh tim rekrutmen melalui tautan berikut:
+👉 **[https://mapid-task.up.railway.app/](https://mapid-task.up.railway.app/)**
+
+---
 
 ## ✨ Fitur Utama
 
@@ -18,17 +25,16 @@ GeoPort adalah sebuah aplikasi web sederhana berbasis **Laravel** dan **Tailwind
 
 ---
 
-## 🚀 Cara Menjalankan di Local (Menggunakan Laravel Valet)
+## 🚀 Cara Menjalankan di Local (Development)
 
-Proyek ini telah dikonfigurasi untuk berjalan dengan mudah di macOS menggunakan **Laravel Valet**.
+Proyek ini dapat dijalankan dengan mudah menggunakan *built-in server* PHP (`php artisan serve`) secara universal, maupun menggunakan **Laravel Valet** untuk pengguna macOS.
 
 ### Prasyarat
 - PHP 8.2+
 - Composer
 - Node.js & NPM
-- Laravel Valet terinstal dan menyala.
 
-### Langkah-langkah Instalasi
+### Langkah Instalasi Dasar (Wajib)
 
 1. **Buka Terminal di Direktori Proyek**
    Masuk ke dalam direktori aplikasi ini:
@@ -49,23 +55,39 @@ Proyek ini telah dikonfigurasi untuk berjalan dengan mudah di macOS menggunakan 
    ```
 
 4. **Install Dependensi Front-end & Build (NPM)**
-   Install semua modul Node dan kompilasi *asset* Tailwind CSS:
+   Install semua modul Node dan kompilasi *asset* Tailwind CSS (diperlukan agar UI tidak berantakan):
    ```bash
    npm install
    npm run build
    ```
-   *(Catatan: Anda juga bisa menjalankan `npm run dev` pada tab terminal terpisah jika ingin melihat perubahan desain UI secara langsung / Hot Module Replacement).*
 
-5. **Tautkan Proyek dengan Laravel Valet**
-   Daftarkan direktori proyek ini ke Valet dengan perintah:
+*(Catatan: Anda juga bisa menjalankan `npm run dev` pada tab terminal terpisah jika ingin melihat perubahan desain UI secara langsung / Hot Module Replacement).*
+
+---
+
+### Opsi 1: Menggunakan `php artisan serve` (Universal)
+
+Cara paling standar dan direkomendasikan untuk menjalankan aplikasi Laravel di lingkungan lokal apa pun (Windows, Linux, macOS).
+
+1. Jalankan perintah berikut di terminal Anda:
+   ```bash
+   php artisan serve
+   ```
+
+2. Aplikasi Anda sekarang berjalan. Buka *browser* dan akses:
+   👉 **http://localhost:8000**
+
+---
+
+### Opsi 2: Menggunakan Laravel Valet (Khusus macOS)
+
+Bagi Anda yang sudah menginstal dan menjalankan Laravel Valet di perangkat Mac.
+
+1. Tautkan proyek ini ke Valet dengan perintah:
    ```bash
    valet link geospatial-app
    ```
-   *(Catatan: Jika folder di luar proyek ini sudah menggunakan perintah `valet park`, Anda dapat melewati langkah ini).*
 
-6. **Akses Aplikasi di Browser**
-   Setelah Valet berhasil dihubungkan, Anda dapat mengakses proyek secara lokal tanpa perlu mengetikkan port:
-   
+   *(Jika folder induk proyek ini sudah menggunakan `valet park`, Anda dapat melewati langkah ini).*
+2. Setelah berhasil dihubungkan, buka *browser* dan akses:
    👉 **http://geospatial-app.test**
-
----
