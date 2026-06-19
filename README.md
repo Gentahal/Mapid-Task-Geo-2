@@ -17,6 +17,31 @@ Aplikasi ini telah di-deploy dan dapat diakses secara publik oleh tim rekrutmen 
 - **Basemap Open-Source**: Menggunakan gaya peta *CartoDB Dark Matter* berbasis OpenStreetMap (OSM) tanpa bergantung pada API key berbayar.
 - **Responsif & Mobile-Friendly**: Tampilan disesuaikan sempurna untuk seluruh ukuran layar (mencegah *overscroll* pada halaman peta).
 
+## 🗺️ Panduan Penggunaan Peta Dinamis
+
+Aplikasi ini dilengkapi dengan fitur _Routing_ kendaraan interaktif dan pembuatan poligon dinamis menggunakan integrasi OSRM dan Nominatim Geocoding API. Berikut adalah cara penggunaannya:
+
+1. Buka halaman **Live Map Data**.
+2. **Menentukan Titik Lokasi:** Anda dapat menentukan Titik Awal, Titik Tujuan, maupun Titik Pusat Area Merah dengan dua cara yang sangat fleksibel:
+   - **Metode Point-and-Click:** Klik pada salah satu kolom input (misal: Titik Awal) agar fokus, lalu **klik di mana saja pada peta**. Koordinat presisi `(Lat, Lng)` akan langsung terisi secara otomatis.
+   - **Metode Pencarian Teks (Geocoding):** Anda tidak perlu pusing memikirkan koordinat! Cukup **ketikkan nama tempat** di dalam kolom input (contoh: `"Jakarta"`, `"Gedung Sate"`, atau `"Mie Gacoan Buah Batu"`). Sistem pintar kami akan melacak dan mencari lokasi tersebut secara otomatis.
+3. **Kalkulasi Rute:** Setelah Titik Awal dan Titik Tujuan terisi, klik tombol **"Tampilkan di Peta"**. Sistem akan menarik data dari API OSRM untuk menggambar jalur nyata terpendek untuk kendaraan roda empat di atas peta.
+4. **Area Poligon Kustom:** Jika Anda mengisi input _Pusat Area Merah (Opsional)_, sistem akan langsung menggambar zona merah berukuran ~1km x 1km tepat di titik yang Anda pilih (sebagai demonstrasi dari manipulasi layer GeoJSON dinamis).
+5. **Analisis Hasil:** Tinjau jarak tempuh akurat dan estimasi waktu berkendara pada jendela _pop-up_ ringkas di sudut kanan atas layar.
+
+## 📸 Demo Antarmuka (UI)
+
+### Halaman Beranda (Landing Page)
+![Halaman Beranda](public/image/dua.png)
+
+### Section Tentang (Default Load)
+![Section Tentang](public/image/satu.png)
+
+### Halaman Peta (Hasil Routing Dinamis)
+![Hasil Kalkulasi Routing](public/image/tiga.png)
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Framework**: Laravel 

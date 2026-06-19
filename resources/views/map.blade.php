@@ -43,13 +43,13 @@
     
     <div id="map"></div>
 
-    <div class="absolute top-6 left-6 z-10 flex flex-col gap-4">
+    <div class="absolute top-6 left-6 z-10 flex flex-col gap-4 w-full max-w-xs md:max-w-sm">
         <a href="{{ route('home') }}" class="inline-flex items-center w-max px-5 py-2.5 text-sm font-medium text-black bg-white rounded-full hover:bg-zinc-200 transition-colors shadow-lg">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Kembali ke Beranda
         </a>
 
-        <div class="linear-panel rounded-2xl p-6 max-w-xs md:max-w-sm">
+        <div class="linear-panel rounded-2xl p-6">
             <div class="flex items-center mb-5">
                 <div class="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center mr-4 border border-zinc-700">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -61,21 +61,61 @@
                     <p class="text-xs text-zinc-400">Informasi Rute Peta</p>
                 </div>
             </div>
-            <p class="text-zinc-400 text-xs leading-relaxed mb-5">
-                Peta ini memvisualisasikan jalur dan jarak dari Kosku <strong>Grand Saskara</strong> menuju ke area gedung perkuliahan di <strong>TULT Telkom University</strong>.
+            
+            <div class="flex flex-col gap-3 mb-4">
+                <div>
+                    <label class="text-xs text-zinc-400">Titik Awal (Lat, Lng)</label>
+                    <input type="text" id="start-point" placeholder="Klik peta atau ketik..." class="w-full bg-zinc-800/50 text-white border border-zinc-700 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:border-[#3b82f6] transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-400">Titik Tujuan (Lat, Lng)</label>
+                    <input type="text" id="end-point" placeholder="Klik peta atau ketik..." class="w-full bg-zinc-800/50 text-white border border-zinc-700 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:border-[#3b82f6] transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-400">Pilih Area (Opsional)</label>
+                    <input type="text" id="polygon-point" placeholder="Klik peta atau ketik..." class="w-full bg-zinc-800/50 text-white border border-zinc-700 rounded-lg px-3 py-2 text-sm mt-1 focus:outline-none focus:border-[#ef4444] transition-colors">
+                </div>
+                <button id="calc-btn" class="w-full bg-[#3b82f6] hover:bg-blue-600 text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors mt-2">
+                    Tampilkan di Peta
+                </button>
+            </div>
+            <p class="text-xs text-zinc-500 leading-relaxed">
+                *Pilih kolom input lalu klik pada peta untuk mengisi koordinat secara otomatis.
             </p>
-            <div class="flex flex-col gap-3 text-xs">
+            
+            <div class="mt-5 pt-5 border-t border-zinc-800 flex flex-col gap-3 text-xs">
                 <div class="flex items-center text-zinc-300">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#10b981] mr-3"></span> Titik Lokasi
+                    <span class="w-3 h-3 rounded-full bg-[#10b981] border-2 border-[#0a0a0a] mr-3"></span> Titik Awal
                 </div>
                 <div class="flex items-center text-zinc-300">
-                    <span class="w-2.5 h-0.5 bg-[#3b82f6] mr-3"></span> Jalur Tempuh
+                    <span class="w-3 h-3 rounded-full bg-[#ef4444] border-2 border-[#0a0a0a] mr-3"></span> Titik Tujuan
                 </div>
                 <div class="flex items-center text-zinc-300">
-                    <span class="w-2.5 h-2.5 border border-[#ef4444] bg-[#b91c1c]/30 mr-3 rounded-sm"></span> Kawasan Kampus
+                    <span class="w-3 h-1 bg-[#3b82f6] mr-3 rounded-full"></span> Rute Kendaraan Tercepat
+                </div>
+                <div id="legend-polygon" class="flex items-center text-zinc-300">
+                    <span class="w-3 h-3 border border-[#ef4444] bg-[#b91c1c]/30 mr-3 rounded-[3px]"></span> Area Yang Dipilih
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="result-popup" class="hidden absolute top-6 right-6 z-10 linear-panel rounded-2xl p-6 w-64 border-l-4 border-l-[#3b82f6] transition-opacity duration-300 shadow-2xl">
+        <h3 class="text-white font-semibold mb-4 text-sm flex items-center">
+            <svg class="w-4 h-4 mr-2 text-[#3b82f6]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Hasil Kalkulasi
+        </h3>
+        <div class="space-y-3">
+            <div>
+                <p class="text-xs text-zinc-400 mb-1">Jarak Tempuh</p>
+                <p id="res-distance" class="font-bold text-white text-lg">-</p>
+            </div>
+            <div>
+                <p class="text-xs text-zinc-400 mb-1">Estimasi Waktu Kendaraan</p>
+                <p id="res-time" class="font-bold text-[#10b981] text-lg">-</p>
+            </div>
+        </div>
+        <button id="close-popup" class="w-full mt-5 py-2 text-xs font-medium text-zinc-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors border border-zinc-700">Tutup</button>
     </div>
 
     <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
@@ -90,38 +130,74 @@
 
         map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-        map.on('load', () => {
+        let activeInput = null;
+        const startInput = document.getElementById('start-point');
+        const endInput = document.getElementById('end-point');
+        const polygonInput = document.getElementById('polygon-point');
+        const calcBtn = document.getElementById('calc-btn');
+        const resultPopup = document.getElementById('result-popup');
+        const resDistance = document.getElementById('res-distance');
+        const resTime = document.getElementById('res-time');
+        const closePopup = document.getElementById('close-popup');
+        const legendPolygon = document.getElementById('legend-polygon');
 
-            const dummyGeoJSON = {
+        startInput.addEventListener('focus', () => activeInput = startInput);
+        endInput.addEventListener('focus', () => activeInput = endInput);
+        polygonInput.addEventListener('focus', () => activeInput = polygonInput);
+
+        map.on('click', (e) => {
+            if (activeInput) {
+                const lat = e.lngLat.lat.toFixed(6);
+                const lng = e.lngLat.lng.toFixed(6);
+                activeInput.value = `${lat}, ${lng}`;
+            }
+        });
+
+        closePopup.addEventListener('click', () => {
+            resultPopup.classList.add('hidden');
+        });
+
+        async function geocode(query) {
+            const coords = query.split(',').map(s => parseFloat(s.trim()));
+            if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+                return [coords[1], coords[0]]; 
+            }
+            
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                return [parseFloat(data[0].lon), parseFloat(data[0].lat)]; 
+            }
+            throw new Error(`Lokasi "${query}" tidak ditemukan.`);
+        }
+
+        map.on('load', () => {
+            const initialGeoJSON = {
                 "type": "FeatureCollection",
                 "features": [
                     {
                         "type": "Feature",
-                        "geometry": { "type": "Point", "coordinates": [107.6579720383293, -7.0032801660342825] },
-                        "properties": { "type": "point", "title": "Rumah (Grand Saskara)" }
-                    },
-                    {
-                        "type": "Feature",
-                        "geometry": { "type": "Point", "coordinates": [107.631500, -6.974500] },
-                        "properties": { "type": "point", "title": "Gerbang Telkom Univ" }
+                        "geometry": { "type": "Point", "coordinates": [107.657972, -7.003280] },
+                        "properties": { "type": "start-point" }
                     },
                     {
                         "type": "Feature",
                         "geometry": { "type": "Point", "coordinates": [107.628157, -6.969282] },
-                        "properties": { "type": "point", "title": "TULT" }
-                    },                     
+                        "properties": { "type": "end-point" }
+                    },
                     {
                         "type": "Feature",
                         "geometry": {
                             "type": "LineString",
                             "coordinates": [
-                                [107.6579720383293, -7.0032801660342825],
+                                [107.657972, -7.003280],
                                 [107.638783, -6.978381], 
-                                [107.631500, -6.974500], 
                                 [107.628157, -6.969282]                 
                             ]
                         },
-                        "properties": { "type": "line", "title": "Rute Berangkat" }
+                        "properties": { "type": "line" }
                     },
                     {
                         "type": "Feature",
@@ -135,15 +211,16 @@
                                 [107.6250, -6.9680]  
                             ]]
                         },
-                        "properties": { "type": "polygon", "title": "Kawasan Telkom University" }
+                        "properties": { "type": "polygon" }
                     }
                 ]
             };
 
             map.addSource('geospatial-data', {
                 type: 'geojson',
-                data: dummyGeoJSON
+                data: initialGeoJSON
             });
+
             map.addLayer({
                 id: 'polygon-layer',
                 type: 'fill',
@@ -161,18 +238,21 @@
                 type: 'line',
                 source: 'geospatial-data',
                 filter: ['==', 'type', 'line'],
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
                 paint: {
                     'line-color': '#3b82f6', 
-                    'line-width': 4,
-                    'line-dasharray': [2, 1.5] 
+                    'line-width': 4
                 }
             });
 
             map.addLayer({
-                id: 'point-layer',
+                id: 'start-point-layer',
                 type: 'circle',
                 source: 'geospatial-data',
-                filter: ['==', 'type', 'point'],
+                filter: ['==', 'type', 'start-point'],
                 paint: {
                     'circle-radius': 7,
                     'circle-color': '#10b981', 
@@ -181,6 +261,140 @@
                 }
             });
 
+            map.addLayer({
+                id: 'end-point-layer',
+                type: 'circle',
+                source: 'geospatial-data',
+                filter: ['==', 'type', 'end-point'],
+                paint: {
+                    'circle-radius': 7,
+                    'circle-color': '#ef4444', 
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#0a0a0a'
+                }
+            });
+
+            calcBtn.addEventListener('click', async () => {
+                if (!startInput.value || !endInput.value) {
+                    alert('Silakan isi Titik Awal dan Titik Tujuan terlebih dahulu.');
+                    return;
+                }
+
+                try {
+                    const originalBtnText = calcBtn.innerHTML;
+                    calcBtn.innerHTML = 'Mencari Lokasi...';
+                    calcBtn.disabled = true;
+
+                    const startPoint = await geocode(startInput.value);
+                    const endPoint = await geocode(endInput.value);
+
+                    let routeGeoJSONFeatures = [
+                        {
+                            "type": "Feature",
+                            "geometry": { "type": "Point", "coordinates": startPoint },
+                            "properties": { "type": "start-point" }
+                        },
+                        {
+                            "type": "Feature",
+                            "geometry": { "type": "Point", "coordinates": endPoint },
+                            "properties": { "type": "end-point" }
+                        }
+                    ];
+
+                    calcBtn.innerHTML = 'Menghitung Rute...';
+
+                    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${startPoint[0]},${startPoint[1]};${endPoint[0]},${endPoint[1]}?overview=full&geometries=geojson`;
+                    
+                    const response = await fetch(osrmUrl);
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data rute dari server OSRM.');
+                    }
+                    
+                    const data = await response.json();
+                    let routeGeometry = null;
+
+                    if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
+                        const route = data.routes[0];
+                        routeGeometry = route.geometry;
+                        
+                        routeGeoJSONFeatures.push({
+                            "type": "Feature",
+                            "geometry": routeGeometry,
+                            "properties": { "type": "line" }
+                        });
+
+                        const distanceMeters = route.distance;
+                        const distanceKm = distanceMeters / 1000;
+                        
+                        const durationSeconds = route.duration;
+                        const timeMinutes = Math.round(durationSeconds / 60);
+
+                        resDistance.textContent = distanceKm < 1 ? `${Math.round(distanceMeters)} m` : `${distanceKm.toFixed(2)} km`;
+                        
+                        if (timeMinutes < 1) {
+                            resTime.textContent = '< 1 menit';
+                        } else if (timeMinutes >= 60) {
+                            const h = Math.floor(timeMinutes / 60);
+                            const m = timeMinutes % 60;
+                            resTime.textContent = `${h} jam ${m} mnt`;
+                        } else {
+                            resTime.textContent = `${timeMinutes} menit`;
+                        }
+                        resultPopup.classList.remove('hidden');
+                    } else {
+                        alert('Rute berkendara tidak ditemukan, mungkin titik tersebut tidak terhubung oleh jalan raya.');
+                        resultPopup.classList.add('hidden');
+                    }
+
+                    if (polygonInput.value) {
+                        const polyCenter = await geocode(polygonInput.value);
+                        if (polyCenter) {
+                            const pLng = polyCenter[0];
+                            const pLat = polyCenter[1];
+                            const offset = 0.005;
+
+                            routeGeoJSONFeatures.push({
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Polygon",
+                                    "coordinates": [[
+                                        [pLng - offset, pLat - offset],
+                                        [pLng + offset, pLat - offset],
+                                        [pLng + offset, pLat + offset],
+                                        [pLng - offset, pLat + offset],
+                                        [pLng - offset, pLat - offset]
+                                    ]]
+                                },
+                                "properties": { "type": "polygon" }
+                            });
+
+                            if (legendPolygon) legendPolygon.style.display = 'flex';
+                        }
+                    } else {
+                        if (legendPolygon) legendPolygon.style.display = 'none';
+                    }
+
+                    map.getSource('geospatial-data').setData({
+                        "type": "FeatureCollection",
+                        "features": routeGeoJSONFeatures
+                    });
+
+                    const bounds = new maplibregl.LngLatBounds();
+                    if (routeGeometry) {
+                        routeGeometry.coordinates.forEach(coord => bounds.extend(coord));
+                    } else {
+                        bounds.extend(startPoint);
+                        bounds.extend(endPoint);
+                    }
+                    map.fitBounds(bounds, { padding: 80 });
+
+                } catch (e) {
+                    alert('Error: ' + e.message + '\nPastikan ejaan nama tempat atau format lat, lng benar.');
+                } finally {
+                    calcBtn.innerHTML = 'Tampilkan di Peta';
+                    calcBtn.disabled = false;
+                }
+            });
         });
     </script>
 </body>
