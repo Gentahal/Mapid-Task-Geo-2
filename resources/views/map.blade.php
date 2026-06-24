@@ -173,53 +173,15 @@
             throw new Error(`Lokasi "${query}" tidak ditemukan.`);
         }
 
-        map.on('load', () => {
-            const initialGeoJSON = {
-                "type": "FeatureCollection",
-                "features": [
-                    {
-                        "type": "Feature",
-                        "geometry": { "type": "Point", "coordinates": [107.657972, -7.003280] },
-                        "properties": { "type": "start-point" }
-                    },
-                    {
-                        "type": "Feature",
-                        "geometry": { "type": "Point", "coordinates": [107.628157, -6.969282] },
-                        "properties": { "type": "end-point" }
-                    },
-                    {
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "LineString",
-                            "coordinates": [
-                                [107.657972, -7.003280],
-                                [107.638783, -6.978381], 
-                                [107.628157, -6.969282]                 
-                            ]
-                        },
-                        "properties": { "type": "line" }
-                    },
-                    {
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [[
-                                [107.6250, -6.9680], 
-                                [107.6310, -6.9680], 
-                                [107.6310, -6.9760], 
-                                [107.6250, -6.9760], 
-                                [107.6250, -6.9680]  
-                            ]]
-                        },
-                        "properties": { "type": "polygon" }
-                    }
-                ]
-            };
+        map.on('load', async () => {
+            try {
+                const response = await fetch('/api/map-data');
+                const initialGeoJSON = await response.json();
 
-            map.addSource('geospatial-data', {
-                type: 'geojson',
-                data: initialGeoJSON
-            });
+                map.addSource('geospatial-data', {
+                    type: 'geojson',
+                    data: initialGeoJSON
+                });
 
             map.addLayer({
                 id: 'polygon-layer',
@@ -273,6 +235,10 @@
                     'circle-stroke-color': '#0a0a0a'
                 }
             });
+
+            } catch (error) {
+                console.error("Gagal memuat data dummy dari backend:", error);
+            }
 
             calcBtn.addEventListener('click', async () => {
                 if (!startInput.value || !endInput.value) {
